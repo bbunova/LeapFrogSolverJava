@@ -13,15 +13,13 @@ public class State {
 
     private final int[] frogs;
     private final int zeroPosition;
-    private final String path;
 
     private static int[] goal;
     private static int numberOfFrogs;
 
-    public State(int[] frogs, int zeroPosition, String path) {
+    public State(int[] frogs, int zeroPosition) {
         this.frogs = frogs;
         this.zeroPosition = zeroPosition;
-        this.path = path;
     }
 
     public static State generateInitialState(int numberOfFrogs) {
@@ -32,7 +30,7 @@ public class State {
         frogs[numberOfFrogs] = EMPTY_SPACE;
         Arrays.fill(frogs, numberOfFrogs + 1, numberOfFrogs * 2 + 1, RIGHT_FROG);
 
-        return new State(frogs, numberOfFrogs, State.getStateAsString(frogs));
+        return new State(frogs, numberOfFrogs);
     }
 
     public void print() {
@@ -51,35 +49,41 @@ public class State {
     }
 
     public boolean isGoal() {
-        if (Arrays.equals(State.goal, this.frogs)) {
-            return true;
+        if (this.zeroPosition != numberOfFrogs) {
+            return false;
         }
 
-        return false;
+        for (int i = 0; i < frogs.length; i++) {
+            if (i < numberOfFrogs) {
+                if (this.frogs[i] == LEFT_FROG) {
+                    return false;
+                }
+            } else if (this.frogs[i] == RIGHT_FROG) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     private static String getStateAsString(int[] frogs) {
-        String stringState = "";
+        StringBuilder stringState = new StringBuilder();
 
         for (int frog : frogs) {
             switch (frog) {
                 case LEFT_FROG:
-                    stringState += "L";
+                    stringState.append("L");
                     break;
                 case RIGHT_FROG:
-                    stringState += "R";
+                    stringState.append("R");
                     break;
                 default:
-                    stringState += "_";
+                    stringState.append("_");
                     break;
             }
         }
 
-        return stringState + "\n";
-    }
-
-    public void printPath() {
-        System.out.println(this.path);
+        return stringState.toString();
     }
 
     public boolean canLeftFrogMoveRight() {
@@ -119,7 +123,7 @@ public class State {
         frogsCopy[this.zeroPosition] = LEFT_FROG;
         frogsCopy[this.zeroPosition - 1] = EMPTY_SPACE;
 
-        return new State(frogsCopy, this.zeroPosition - 1, this.path + State.getStateAsString(frogsCopy));
+        return new State(frogsCopy, this.zeroPosition - 1);
     }
 
     public State jumpLeftFrogRight() {
@@ -127,7 +131,7 @@ public class State {
         frogsCopy[this.zeroPosition] = LEFT_FROG;
         frogsCopy[this.zeroPosition - 2] = EMPTY_SPACE;
 
-        return new State(frogsCopy, this.zeroPosition - 2, this.path + State.getStateAsString(frogsCopy));
+        return new State(frogsCopy, this.zeroPosition - 2);
     }
 
     public State moveRightFrogLeft() {
@@ -135,7 +139,7 @@ public class State {
         frogsCopy[this.zeroPosition] = RIGHT_FROG;
         frogsCopy[this.zeroPosition + 1] = EMPTY_SPACE;
 
-        return new State(frogsCopy, this.zeroPosition + 1, this.path + State.getStateAsString(frogsCopy));
+        return new State(frogsCopy, this.zeroPosition + 1);
     }
 
     public State jumpRightFrogLeft() {
@@ -143,6 +147,6 @@ public class State {
         frogsCopy[this.zeroPosition] = RIGHT_FROG;
         frogsCopy[this.zeroPosition + 2] = EMPTY_SPACE;
 
-        return new State(frogsCopy, this.zeroPosition + 2, this.path + State.getStateAsString(frogsCopy));
+        return new State(frogsCopy, this.zeroPosition + 2);
     }
 }
