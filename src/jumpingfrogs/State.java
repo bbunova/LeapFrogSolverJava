@@ -14,7 +14,6 @@ public class State {
     private final int[] frogs;
     private final int zeroPosition;
 
-    private static int[] goal;
     private static int numberOfFrogs;
 
     public State(int[] frogs, int zeroPosition) {
@@ -35,17 +34,6 @@ public class State {
 
     public void print() {
         System.out.println(State.getStateAsString(this.frogs));
-    }
-
-    public static void initialiseGoal(int numberOfFrogs) {
-        State.numberOfFrogs = numberOfFrogs;
-
-        int[] frogs = new int[numberOfFrogs * 2 + 1];
-        Arrays.fill(frogs, 0, numberOfFrogs, RIGHT_FROG);
-        frogs[numberOfFrogs] = EMPTY_SPACE;
-        Arrays.fill(frogs, numberOfFrogs + 1, numberOfFrogs * 2 + 1, LEFT_FROG);
-
-        State.goal = frogs;
     }
 
     public boolean isGoal() {

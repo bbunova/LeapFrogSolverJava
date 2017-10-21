@@ -18,8 +18,7 @@ public class Solver {
         Scanner input = new Scanner(System.in);
         numberOfFrogs = input.nextInt();
 
-        State initialState = State.generateInitialState(numberOfFrogs);
-        State.initialiseGoal(numberOfFrogs);
+        State initialState = State.generateInitialState(numberOfFrogs);;
 
         Solver solver = new Solver();
         solver.dfsRecursive(initialState);
